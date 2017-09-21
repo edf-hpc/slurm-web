@@ -277,7 +277,29 @@ class User(object):
         # return user's name from the 1st item of gecos field
         if self.login == 'guest':
             return 'guest'
-        return pwd.getpwnam(self.login)[4].split(',')[0]
+        # try to retrieve password from LDAP
+        try:
+            conn = get_ldap_connection()
+            base_people = settings.get('ldap', 'base_people')
+            user_filter = "(uid=%s)" % self.login
+            # search in LDAP for the given name of this user
+            given_name = conn.search_s(base_people,
+                                       ldap.SCOPE_SUBTREE,
+                                       user_filter,
+                                       attrlist=['givenname'])
+            # get the given name and format it properly
+            if not len(given_name) == 0:
+                user_name = given_name[0][1]['givenName'][0].decode('utf-8')
+                return user_name
+        except:
+            print "Can't retrieve username from LDAP for %s" % self.login
+        # try to retrieve it for system
+        try:
+            return pwd.getpwnam(self.login)[4].split(',')[0]
+        except:
+            print "Can't retrieve username from system for %s" % self.login
+        # return user login if the other steps have failed
+        return "%s" % self.login
 
 
 def authentication_verify():
