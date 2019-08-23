@@ -59,7 +59,14 @@ define([
           });
       };
 
-      async.mapSeries(window.clusters, loginOnCluster, function(err, result) {
+      var currentClusterIndex = window.clusters.indexOf(config.cluster);
+      var orderedClusters = window.clusters.slice();
+      // copy clusters' list
+      orderedClusters.splice(currentClusterIndex, 1);
+      // remove selected cluster from the list
+      orderedClusters.splice(0,0, config.cluster);
+      // add selected cluster as the first item of the list
+      async.mapSeries(orderedClusters, loginOnCluster, function(err, result) {
         var clusterId = window.clusters.indexOf(config.cluster);
 
         if (err && !userUtils.getUser(config.cluster)) {
