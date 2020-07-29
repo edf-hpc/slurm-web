@@ -204,6 +204,13 @@ class User(object):
 
             # authenticate user on ldap
             user_dn = "uid=%s,%s" % (login, base_people)
+            # Retrieve user branch from LDAP
+            user_dns = conn.search_s(base_people,
+                                     ldap.SCOPE_SUBTREE,
+                                     "(uid=%s)" % login,
+                                     ['cn'])
+            if len(user_dns) > 0:
+                user_dn = user_dns[0][0]
             conn.simple_bind_s(user_dn, password)
 
             print "User %s authenticated" % login
