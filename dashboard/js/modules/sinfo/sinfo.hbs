@@ -1,0 +1,37 @@
+<div id="sinfo">
+  <h1 class="page-header">
+    Sinfo
+  </h1>
+  <div class='table-responsive'>
+    {{#if count}}
+      <table class='table table-striped tablesorter'>
+        <thead>
+          <tr>
+            <th>Partition</th>
+            <th>Availability</th>
+            <th>Job size</th>
+            <th>Time limit</th>
+            <th>Nodes</th>
+            <th>State</th>
+            <th>Node list</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each partitions}}
+            <tr>
+              <td>{{name}}</td>
+              <td>{{avail}}</td>
+              <td>{{job_size}}</td>
+              <td>{{time_limit}}</td>
+              <td>{{nodes}}</td>
+              <td>{{state}}</td>
+              <td>{{nodelist}}</td>
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
+      {{else}}
+        <p>There is no data to display.</p>
+    {{/if}}
+  </div>
+</div>

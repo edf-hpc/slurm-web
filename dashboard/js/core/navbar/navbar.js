@@ -40,7 +40,8 @@ define([
     { id: 'qos', name: 'QOS' },
     { id: 'reservations', name: 'Reservations' },
     { id: 'gantt', name: 'Gantt' },
-    { id: 'topology', name: 'Topology' }
+    { id: 'topology', name: 'Topology' },
+    { id: 'sinfo', name: 'Sinfo' }
   ];
 
   template = Handlebars.compile(template);
