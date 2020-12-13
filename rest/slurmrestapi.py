@@ -308,9 +308,9 @@ def get_topology():
         # Clustershell Nodeset() into new corresponding *list members.
         for switch in topology.itervalues():
             if switch['switches'] is not None:
-                switch['switchlist'] = list(NodeSet(switch['switches']))
+                switch['switchlist'] = list(NodeSet(switch['switches'].encode('ascii', 'ignore')))
             if switch['nodes'] is not None:
-                switch['nodelist'] = list(NodeSet(switch['nodes']))
+                switch['nodelist'] = list(NodeSet(switch['nodes'].encode('ascii', 'ignore')))
 
     except Exception as e:
         topology = {'error': str(e)}
@@ -450,7 +450,7 @@ def sinfo():
     sinfo_data = {}
     for name, attr in partitions.iteritems():
 
-        for node in list(NodeSet(attr['nodes'])):
+        for node in list(NodeSet(attr['nodes'].encode('ascii', 'ignore'))):
             key = (name, nodes_state[node])
             if key not in sinfo_data.keys():
                 sinfo_data[key] = []
