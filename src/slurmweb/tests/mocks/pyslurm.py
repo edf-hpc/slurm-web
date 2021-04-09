@@ -39,9 +39,9 @@ class SlurmNode(object):
       'weight': 1,
       'energy': {
         'current_watts': 0,
-        'consumed_energy': 0L,
-        'base_consumed_energy': 0L,
-        'previous_consumed_energy': 0L,
+        'consumed_energy': 0,
+        'base_consumed_energy': 0,
+        'previous_consumed_energy': 0,
         'base_watts': 0
       },
       'cpus': 8,
@@ -98,9 +98,9 @@ class SlurmNode(object):
         self.features = []
         self.weight = 1
         self.energy_current_watts = 0
-        self.energy_consumed = 0L
-        self.energy_base_consumed = 0L
-        self.energy_previous_consumed = 0L
+        self.energy_consumed = 0
+        self.energy_base_consumed = 0
+        self.energy_previous_consumed = 0
         self.energy_base_watts = 0
         self.threads = 1
         self.boards = 1

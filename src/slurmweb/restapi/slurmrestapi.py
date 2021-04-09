@@ -31,19 +31,19 @@ if os.getenv('SLURM_WEB_CLUSTER_MOCK') is not None:
     setup_mock(os.environ['SLURM_WEB_CLUSTER_MOCK'])
 
 # for racks description
-from racks import parse_racks
+from slurmweb.restapi.racks import parse_racks
 
 # for CORS
-from cors import crossdomain
-from settings import settings
+from slurmweb.restapi.cors import crossdomain
+from slurmweb.restapi.settings import settings
 
 # for authentication
-from auth import (User, authentication_verify,
+from slurmweb.restapi.auth import (User, authentication_verify,
                   AuthenticationError, AllUnauthorizedError,
                   guests_allowed, auth_enabled, fill_job_user,
-                  get_current_user)
+                  get_current_user, CORSForbidden)
 
-from cache import get_from_cache
+from slurmweb.restapi.cache import get_from_cache
 
 # for nodeset conversion
 from ClusterShell.NodeSet import NodeSet

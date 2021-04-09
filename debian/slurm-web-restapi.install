@@ -2,5 +2,6 @@ conf/slurm-web-restapi.conf etc/apache2/conf-available
 conf/restapi.conf etc/slurm-web
 conf/racks.xml etc/slurm-web
 schema/racks.dtd usr/share/slurm-web/restapi/schema/dtd
-rest/* usr/share/slurm-web/restapi
+debian_slurm-web/usr/local/lib/python3.*/dist-packages/slurmweb/restapi/slurm-web-restapi.wsgi usr/share/slurm-web/restapi
+debian_slurm-web/usr/local/lib/python3.*/*/slurmweb/restapi/ usr/lib/python3/dist-packages/slurmweb
 dashboard/js/libraries/xdomain.min.js usr/share/slurm-web/restapi/static

@@ -1,3 +1,10 @@
+slurm-web (2.3.0) unstable; urgency=medium
+
+  * Portage to python3
+  * Re-organise the python code
+
+ -- Guillaume Ranquet <guillaume-externe.ranquet@edf.fr> Thu, 08 Apr 2021 14:30:00 +0200
+
 slurm-web (2.2.6) unstable; urgency=medium
 
   * Close some vulnerabilities

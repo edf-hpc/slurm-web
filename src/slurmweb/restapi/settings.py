@@ -19,9 +19,9 @@
 # along with slurm-web.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
-import ConfigParser
+import configparser
 
 # path can be set by the env variable REST_CONF
 path = os.getenv('RESTAPI_CONF', '/etc/slurm-web/restapi.conf')
-settings = ConfigParser.ConfigParser()
+settings = configparser.ConfigParser()
 settings.read(path)

@@ -21,12 +21,12 @@
 import ldap
 import json
 from flask import request, abort, jsonify, Response
-from settings import settings
+from slurmweb.restapi.settings import settings
 from functools import wraps
 from werkzeug.exceptions import Forbidden
 from itsdangerous import (TimedJSONWebSignatureSerializer
                           as Serializer, BadSignature, SignatureExpired)
-from ConfigParser import NoSectionError, NoOptionError
+from configparser import NoSectionError, NoOptionError
 import os
 import platform
 import pwd
@@ -48,16 +48,16 @@ if auth_enabled:
 
     # check secret key file exist or print error otherwise
     if not os.path.exists(secret_key_file):
-        print "Secret key file %s does not exists" % (secret_key_file)
+        print("Secret key file %s does not exists" % (secret_key_file))
 
     try:
         secret_key = open(secret_key_file, 'rb').read()
     except IOError:
-        print "IO error with secret key file %s" % (secret_key_file)
+        print("IO error with secret key file %s" % (secret_key_file))
         # fallback to bad secret key
         secret_key = b"badsecretkey"
 
-    secret_key += platform.node()
+    secret_key += str.encode(platform.node())
 
     if settings.has_option('roles', 'guests'):
         guests_allowed_s = settings.get('roles', 'guests')
@@ -149,10 +149,6 @@ class CORSForbidden(Forbidden):
         return [('Content-Type', 'text/html'),
                 ('Access-Control-Allow-Origin', '*')]
 
-
-abort.mapping.update({403: CORSForbidden})
-
-
 class User(object):
     def __init__(self, login, role, groups=None):
         self.login = login
@@ -206,7 +202,7 @@ class User(object):
             user_dn = "uid=%s,%s" % (login, base_people)
             conn.simple_bind_s(user_dn, password)
 
-            print "User %s authenticated" % login
+            print("User %s authenticated" % login)
 
             # search for user's groups
             look_filter = "(|(&(objectClass=*)(member=%s)))" % (user_dn)
@@ -217,15 +213,15 @@ class User(object):
             return groups
 
         except ldap.SERVER_DOWN:
-            print 'The LDAP server is unreachable.'
+            print('The LDAP server is unreachable.')
             raise AuthenticationError
 
         except ldap.INVALID_CREDENTIALS:
-            print "Authentication failed: login id or password is incorrect."
+            print("Authentication failed: login id or password is incorrect.")
             raise AuthenticationError
 
         except ldap.NO_SUCH_OBJECT as e:
-            print "No result found: %s " + str(e)
+            print("No result found: %s " + str(e))
             raise AuthenticationError
 
         finally:
@@ -261,7 +257,7 @@ class User(object):
             'login': self.login,
             'role':  self.role
         })
-        print "generate_auth_token : token -> %s" % token
+        print("generate_auth_token : token -> %s" % token)
         return token
 
     @staticmethod
@@ -269,16 +265,16 @@ class User(object):
         s = Serializer(secret_key)
         try:
             data = s.loads(token)
-            print "verify_auth_token : data -> login id: %s role: %s" \
-                  % (data['login'], data['role'])
+            print("verify_auth_token : data -> login id: %s role: %s" \
+                  % (data['login'], data['role']))
         except SignatureExpired:
-            print "verify_auth_token : SignatureExpired "
+            print("verify_auth_token : SignatureExpired ")
             return None  # valid token, but expired
         except BadSignature:
-            print "verify_auth_token : BadSignature "
+            print("verify_auth_token : BadSignature ")
             return None  # invalid token
         except TypeError:
-            print "verify_auth_token : TypeError"
+            print("verify_auth_token : TypeError")
             return None
 
         if data['login'] == 'guest':

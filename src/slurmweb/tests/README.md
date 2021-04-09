@@ -31,6 +31,11 @@ First install all slurm-web deps:
 * libjs-handlebars
 * libjs-async
 
+Or you can use the more conveniant requirements.txt file:
+```
+    $ pip install -r requirements.txt
+```
+
 (Please checkout `debian/control` file to get an updated list of slurm-web
 dependencies.)
 

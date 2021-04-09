@@ -1,0 +1,5 @@
+Flask
+mock
+racks
+requests
+slurmweb-core

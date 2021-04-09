@@ -51,7 +51,7 @@ parser.add_argument("-d", "--debug",
 args = parser.parse_args()
 
 if args.debug:
-    print "path: %s" % (str(sys.path))
+    print("path: %s" % (str(sys.path)))
 
 if args.app == 'rest':
 
@@ -64,14 +64,14 @@ if args.app == 'rest':
     sys.modules['ConfigParser'] = MockConfigParserModule
 
     os.environ['SLURM_WEB_CLUSTER_MOCK'] = args.setup
-    from slurmrestapi import app
+    from slurmweb.restapi.slurmrestapi import app
 
 elif args.app == 'conf':
 
-    from slurmwebconf import app
+    from slurmweb.confdashboard.slurmwebconf import app
 
 else:
-    print "unknown app %s" % (args.app)
+    print("unknown app %s" % (args.app))
     sys.exit(1)
 
 

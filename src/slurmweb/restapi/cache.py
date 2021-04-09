@@ -29,8 +29,8 @@ except ImportError:
 
 import json
 from functools import wraps
-from settings import settings
-from ConfigParser import NoOptionError, NoSectionError
+from slurmweb.restapi.settings import settings
+from configparser import NoOptionError, NoSectionError
 
 
 def get_int_setting(param, default):
@@ -38,8 +38,8 @@ def get_int_setting(param, default):
         port = settings.get('cache', param)
         return not port and default or int(port)
     except ValueError as e:
-        print "Error while parsing %s, check restapi.conf : %s" % \
-            (param, str(e))
+        print("Error while parsing %s, check restapi.conf : %s" % \
+                (param, str(e)))
     except (NoOptionError, NoSectionError):
         return default
 
@@ -62,8 +62,8 @@ try:
 
     else:
         enabled = False
-        print ("Package python-redis unavailable, cache mechanism won't" +
-               "be enabled")
+        print(("Package python-redis unavailable, cache mechanism won't" +
+               "be enabled"))
 
 except (NoOptionError, NoSectionError):
     enabled = False
@@ -87,7 +87,7 @@ def get_from_cache(f, overrideName=None, *args, **kwargs):
 
         data = r.get(cache_key)
         if data is not None:
-            print "get %s from cache" % cache_key
+            print("get %s from cache" % cache_key)
             return json.loads(data)
 
         if 'job' in f.__name__:
@@ -97,13 +97,13 @@ def get_from_cache(f, overrideName=None, *args, **kwargs):
 
         resp = f(*args, **kwargs)
         if isinstance(resp, dict):
-            print "set %s in cache with expiration %d" % (cache_key,
-                                                          expiration)
+            print("set %s in cache with expiration %d" % (cache_key,
+                                                        expiration))
             r.set(cache_key, json.dumps(resp))
             r.expire(cache_key, expiration)
 
     except redis.ConnectionError:
-        print "WARNING: ConnectionError from Redis, server unreachable"
+        print("WARNING: ConnectionError from Redis, server unreachable")
         return f(*args, **kwargs)
 
     return resp

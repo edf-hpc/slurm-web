@@ -144,7 +144,7 @@ class MockLdapConn(object):
         """Extract login from dn using regexp."""
         match = re.search('uid=(.*?),', dn)
         login = match.group(1)
-        print "login found in search filter: %s" % (login)
+        print("login found in search filter: %s" % (login))
         return login
 
     def set_option(*args):
